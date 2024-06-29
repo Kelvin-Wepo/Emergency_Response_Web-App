@@ -6,14 +6,12 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from .forms import *
 import stripe
-
-YOUR_DOMAIN = 'http://localhost:8000'
-stripe.api_key = 'sk_test_51OyFFj05WR71AuXapnRyNOu6pPi2WZpP1JmoDG6xDpHjkQ0HljzRdq0Zd5F176eLunS88O49oUMsekVynw10UyLx00WGP4ZRTr'
-
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 import africastalking
 
+YOUR_DOMAIN = 'http://localhost:8000'
+stripe.api_key = 'sk_test_51OyFFj05WR71AuXapnRyNOu6pPi2WZpP1JmoDG6xDpHjkQ0HljzRdq0Zd5F176eLunS88O49oUMsekVynw10UyLx00WGP4ZRTr'
 # APPLICATION VIEWS.
 # home function
 africastalking.api_key = settings.AFRICASTALKING_API_KEY
@@ -21,14 +19,14 @@ def home(request):
     comments= Feedback.objects.all()
     return render(request, 'public/index.html', {'comments':comments})
 
-def owners_home(request):
-    comments= Feedback.objects.all()
-    return render(request, 'owners/owner_home.html', {'comments':comments})
+# def owners_home(request):
+#     comments= Feedback.objects.all()
+#     return render(request, 'owners/owner_home.html', {'comments':comments})
 
 
 def services(request):
-    machineries = Machinery.objects.all()
-    return render(request, 'public/services.html', {'machineries': machineries})
+    ambulances= Ambulance.objects.all()
+    return render(request, 'public/services.html', {'ambulances': ambulances})
 
 
 # Register function
@@ -48,12 +46,12 @@ def public_register(request):
                 profile.contact_number = phone_number
                 profile.save()
         # Send SMS only if phone_number is not None
-                africastalking_username = 'lyzy'
+                africastalking_username = 'kwepo'
                 africastalking_api_key = africastalking.api_key
         
                 africastalking.initialize(africastalking_username, africastalking_api_key)
                 sms = africastalking.SMS
-                message = "Welcome to Niokolee farm tools."
+                message = "Welcome to ERS Services your Emergency Services Partner."
                 response = sms.send(message, [profile.contact_number])
                 print("SMS response:", response)
             return redirect('login')
@@ -76,7 +74,7 @@ def user_login(request):
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
             user = authenticate(username=username, password=password)
-            if user is not None and user.is_owner:
+            if user is not None and user.is_hospital:
                 login(request, user)
                 return redirect('owner')
             elif user is not None and user.is_public:
@@ -111,7 +109,7 @@ def profile(request):
 
     return render(request, 'profile/profile.html', {"users": users})
 
-def owner_profile(request):
+def hospital_profile(request):
     users = User.objects.all()
     current_user = request.user
     # profile = get_object_or_404(Profile,user=request.user)
@@ -131,86 +129,86 @@ def update_profile(request):
         form = ProfileUpdateForm(instance=request.user.profile)
     return render(request, 'profile/update_profile.html', {'form': form})
 
-def owner_update_profile(request):
+def hospital_update_profile(request):
     # profiles= Profile.objects.get(user=request.user)
     if request.method == 'POST':
         userprofileform = ProfileUpdateForm(
             request.POST, request.FILES, instance=request.user.profile)
         if userprofileform.is_valid():
             userprofileform.save()
-            return redirect(to='owner_profile')
+            return redirect(to='hospital_profile')
     else:
         form = ProfileUpdateForm(instance=request.user.profile)
-    return render(request, 'profile/owner_update_profile.html', {'form': form})
+    return render(request, 'profile/hospital_update_profile.html', {'form': form})
 
 # owners html
-def owners(request):
-    machinery = Machinery.objects.all()
-    return render(request, 'owners/owner_home.html', {'machinery': machinery})
+def hospital(request):
+    ambulance = Ambulance.objects.all()
+    return render(request, 'hospitals/hospital_home.html', {'ambulance': ambulance})
 
 
-def add_machinery(request):
+def add_ambulance(request):
     if request.method == 'POST':
         image = request.FILES.get('image')
-        machinery_properties = request.POST.get('describe')
-        machinery_name = request.POST.get('machine')
-        current_location = request.POST.get('location')
-        availability = request.POST.get('available')
-        hire_price = request.POST.get('hire')
-        ploughing_pay_rate = request.POST.get('ploughing')
-        forklifting_pay_rate = request.POST.get('forklifting')
-        transport_pay_rate = request.POST.get('transport')
-        planting_pay_rate = request.POST.get('planting')
-        operator_name = request.POST.get('operator_name')
+        ambulance_name = request.POST.get('ambulance_name')
+        current_location = request.POST.get('current_location')
+        availability = request.POST.get('availability') == 'True'  # Converts 'True'/'False' string to boolean
+        response_rate = request.POST.get('response_rate')
+        driver_name = request.POST.get('driver_name')
+        hospital_name = request.POST.get('hospital_name')
 
-        machinery = Machinery(image=image, machinery_properties=machinery_properties, machinery_name=machinery_name, current_location=current_location, availability=availability, hire_price=hire_price, ploughing_pay_rate=ploughing_pay_rate,
-                              forklifting_pay_rate=forklifting_pay_rate, transport_pay_rate=transport_pay_rate, planting_pay_rate=planting_pay_rate, operator_name=operator_name)
+        ambulance = Ambulance(
+            image=image,
+            ambulance_name=ambulance_name,
+            current_location=current_location,
+            availability=availability,
+            response_rate=response_rate,
+            driver_name=driver_name,
+            hospital_name=hospital_name
+        )
 
-        machinery.owner_id = request.user
+        ambulance.save_ambulance()
 
-        machinery.save_machinery()
+        return redirect('hospital')  # Replace 'owner' with the actual name of the redirect URL
 
-        return redirect('owner')
-
-    return render(request, 'owners/add.html')
+    return render(request, 'hospitals/add.html')
 
 
-def single_machine(request, machinery_id):
-    single_machines = Machinery.objects.get(id=machinery_id)
+def single_ambulance(request, ambulance_id):
+    single_ambulance = get_object_or_404(Ambulance, id=ambulance_id)
     current_user = request.user
-    user = User.objects.get(username=current_user.username)
-    orders = Order.get_orders(machinery_id)
+    user = get_object_or_404(User, username=current_user.username)
+    bookings = Booking.get_bookings(ambulance_id)
 
-    return render(request, 'owners/single_machinery.html', {'single_machines': single_machines,'orders':orders})
+    return render(request, 'owners/single_ambulance.html', {'single_ambulance': single_ambulance, 'bookings': bookings})
+
+def delete_ambulance(request, ambulance_id):
+    ambulance = Ambulance.objects.get(id=ambulance_id)
+    ambulance.delete()
+    return redirect('hospital')
 
 
-def delete_machinery(request, machinery_id):
-    machinery = Machinery.objects.get(id=machinery_id)
-    machinery.delete()
-    return redirect('owner')
-
-
-def update_machinery(request, machinery_id):
-    update = Machinery.objects.get(id=machinery_id)
+def update_ambulance(request, ambulance_id):
+    update = Ambulance.objects.get(id=ambulance_id)
     if request.method == 'POST':
-        machineryform = MachineryUpdateForm(
+        ambulanceform = AmbulanceUpdateForm(
             request.POST, request.FILES, instance=update)
-        if machineryform.is_valid():
-            machineryform.save()
-            return redirect('single', machinery_id)
+        if ambulanceform.is_valid():
+            ambulanceform.save()
+            return redirect('single', ambulance_id)
     else:
-        form2 = MachineryUpdateForm(instance=update)
-    return render(request, 'owners/update_machinery.html', {'form2': form2})
+        form2 = AmbulanceUpdateForm(instance=update)
+    return render(request, 'hospitals/update_ambulance.html', {'form2': form2})
 
 
-def user_single_machine(request, machinery_id):
-    single_machine = Machinery.objects.get(id=machinery_id)
+def user_single_ambulance(request, ambulance_id):
+    single_ambulance = Ambulance.objects.get(id=ambulance_id)
     current_user = request.user
     user = User.objects.get(username=current_user.username)
     
     current_user = request.user
     user = User.objects.get(username=current_user.username)
-    machine = Machinery.objects.get(id=machinery_id)
+    ambulance = Ambulance.objects.get(id=ambulance_id)
     form2 = CommentForm()
     
     if request.method == 'POST':
@@ -220,28 +218,28 @@ def user_single_machine(request, machinery_id):
             comment = form2.save(commit=False)
 
             comment.user_id = user
-            comment.machinery_id = machine
+            comment.ambulance_id = ambulance
 
             comment.save()
 
-            return redirect('single_machine',machinery_id)
+            return redirect('single_ambulance',ambulance_id)
         else:
             form2 = CommentForm()
 
-    return render(request, 'public/single_machine.html', {'single_machine': single_machine, 'form2': form2, 'machine': machine})
+    return render(request, 'public/single_ambulance.html', {'single_ambulance': single_ambulance, 'form2': form2, 'ambulance': ambulance})
 
-def owner_single_machine(request, machinery_id):
-    single_machine = Machinery.objects.get(id=machinery_id)
+def hospital_single_ambulance(request, ambulance_id):
+    single_ambulance = Ambulance.objects.get(id=ambulance_id)
     current_user = request.user
     user = User.objects.get(username=current_user.username)
 
-    return render(request, 'public/single_machine.html', {'owner_single_machine': single_machine,})
+    return render(request, 'public/single_ambulance.html', {'owner_single_ambulance': single_ambulance,})
 
 
-def comment(request, machinery_id):
+def comment(request, ambulance_id):
     current_user = request.user
     user = User.objects.get(username=current_user.username)
-    machine = Machinery.objects.get(id=machinery_id)
+    ambulance = Ambulance.objects.get(id=ambulance_id)
     form2 = CommentForm()
     
     if request.method == 'POST':
@@ -251,39 +249,39 @@ def comment(request, machinery_id):
             comment = form2.save(commit=False)
 
             comment.user_id = user
-            comment.machinery_id = machine
+            comment.ambulance_id = ambulance
 
             comment.save()
 
-            return redirect('single_machine',machinery_id)
+            return redirect('single_ambulance',ambulance_id)
         else:
             form2 = CommentForm()
-    return render(request, 'public/single_machine.html', {'form2': form2, 'machine': machine})
+    return render(request, 'public/single_ambulance.html', {'form2': form2, 'ambulance': ambulance})
 
 
-#order form
-def order(request, machinery_id):
+#booking form
+def booking(request, ambulance_id):
     current_user = request.user
     user = User.objects.get(username=current_user.username)
-    machine = Machinery.objects.get(id=machinery_id)
-    form3 = OrderForm()
+    ambulance = Ambulance.objects.get(id=ambulance_id)
+    form3 = BookingForm()
     
     if request.method == 'POST':
-        form3 = OrderForm(request.POST)
+        form3 = BookingForm(request.POST)
         if form3.is_valid():
 
-            order = form3.save(commit=False)
+            booking = form3.save(commit=False)
 
-            order.user_id = user
-            order.machinery_id = machine
+            booking.user_id = user
+            booking.ambulance_id = ambulance
 
-            order.save()
+            booking.save()
 
-            return redirect('single_machine',machinery_id)
+            return redirect('single_booking',booking_id)
         else:
-            form3 = OrderForm()
+            form3 = BookingForm()
 
-    return render(request, 'public/order.html', {'form3': form3, 'machine': machine})
+    return render(request, 'public/order.html', {'form3': form3, 'ambulance': ambulance})
 
 
 
