@@ -1,0 +1,173 @@
+{% load static %}
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg mb-2 shadow" id="nav">
+  <!-- Container wrapper -->
+  <div class="container-fluid">
+    <!-- Toggle button -->
+    <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Collapsible wrapper -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <!-- Navbar brand -->
+      <a class="navbar-brand mt-2 mt-lg-0" href="/">
+        <img src="{% static 'images/trac.png'%}" alt="OKOA FARM" loading="lazy" id="logo" />
+      </a>
+      <!-- Left links -->
+      {% if user.is_authenticated %}
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link link-link" href="{%  url 'owner' %}">NIOKOLEE FARM</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link link-link" href="{% url 'owner' %}">Other Machinery</a>
+        </li>
+        <li class="yellow-link">
+          <a class="nav-link link-link" data-mdb-toggle="modal"
+          data-mdb-target="#myModal"> <i class="fas fa-plus-circle"></i>Add Machinery</a>
+
+          <!-- Modal -->
+          <div class="modal fade"  id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl modal-dialog-centered"">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Welcome {{user.username}}, Add Machinery Here</h5>
+                  <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body modal-xl">
+                  <!-- <div class="col-md-12 card p-4" id="hood-card"> -->
+                  <form method="POST" action="{% url 'add' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <!-- Image field -->
+                    <div class="mb-3 col-md-12">
+                      <label class="form-label" for="customFile">Machinery Image</label>
+                      <input type="file" class="form-control" id="image" name="image" />
+
+                    </div>
+
+                    <div row="px-4">
+                      <div class="form-outline mb-4">
+                        <textarea class="form-control" id="describe" rows="4" name="describe"></textarea>
+                        <label class="form-label" for="form6Example7">Machinery Properties</label>
+                      </div>
+                    </div>
+                    <div class="row px-4">
+                      <div class="form-outline mb-4 col-md-5 me-3">
+                        <input type="text" id="machinery-name" class="form-control" name="machine" />
+                        <label class="form-label" for="name">Machinery Name
+                      </div>
+
+                      <div class="form-outline mb-4 col-md-4 me-2">
+                        <input type="text" id="machinery-name" class="form-control" name="location" />
+                        <label class="form-label" for="name">Current Location</label>
+                      </div>
+                      <div class="form-outline mb-4 col-md-2">
+                        <input type="text" id="machinery-name" class="form-control" name="available" />
+                        <label class="form-label" for="name">Availability
+                      </div>
+                    </div>
+
+                    <div class="row  px-4">
+                      <div class="form-outline mb-4 col-md-4 me-2">
+                        <input type="text" id="business_name" class="form-control" name="hire" />
+                        <label class="form-label" for="name">Hire Price Per Hour</label>
+                      </div>
+
+
+                      <div class="form-outline mb-4 col-md-4  me-2">
+                        <input type="text" id="location" class="form-control" name="ploughing" />
+                        <label class="form-label" for="name">Ploughing Pay Rate</label>
+                      </div>
+
+                      <div class="form-outline mb-4 col-md-3  me-2">
+                        <input type="number" id="count" class="form-control" name="forklifting" />
+                        <label class="form-label" for="title">ForkLifting Pay Rate</label>
+                      </div>
+                    </div>
+
+                    <div class=" row px-4">
+                      <div class="form-outline mb-4 col-md-3 me-2">
+                        <input type="text" id="contact" class="form-control" name="transport" />
+                        <label class="form-label" for="title">Transport Pay Rate</label>
+                      </div>
+
+                      <div class="form-outline mb-4 col-md-4 me-3">
+                        <input type="text" id="contact" class="form-control" name="planting" />
+                        <label class="form-label" for="title">Planting Pay Rate</label>
+                      </div>
+
+                      <div class="form-outline mb-4 col-md-4 ">
+                        <input type="text" id="police" class="form-control" name="operator_name" />
+                        <label class="form-label" for="title">Operator_name</label>
+                      </div>
+                    </div>
+
+                    <!-- Submit button -->
+                    <button type="submit" class="btn btn-block" id="save-button">Add Machinery</button>
+                  </form>
+                  <!-- </div> -->
+                </div>
+                <div class="modal-footer">
+                  <button type="submit" class="btn" id="save-button">Add Machinery</button>
+                  <button type="button" class="btn" data-mdb-dismiss="modal" id="close-button">
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <!-- Left links -->
+    </div>
+    <!-- Collapsible wrapper -->
+
+    <!-- Right elements -->
+    <div class="d-flex align-items-center">
+
+      <!-- Notifications -->
+      <div class="dropdown">
+        <a class="text-reset me-3 dropdown-toggle hidden-arrow" href="#" id="navbarDropdownMenuLink" role="button"
+          data-mdb-toggle="dropdown" aria-expanded="false">
+          <i class="fas fa-bell text-warning"></i>
+          <span class="badge rounded-pill badge-notification bg-white text-warning">1</span>
+        </a>
+      </div>
+      <!-- Avatar -->
+      <div class="dropdown">
+        <a class="dropdown-toggle d-flex align-items-center hidden-arrow" href="#" id="navbarDropdownMenuAvatar"
+          role="button" data-mdb-toggle="dropdown" aria-expanded="false">{% if request.user.profile.profile_pic %}
+          <img src="{{request.user.profile.profile_pic.url}}" class="rounded-circle" alt="User" loading="lazy"
+            id="logo" />
+          {%else %}
+          <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" class="rounded-circle shadow" height="25"
+            alt="Black and White Portrait of a Man" loading="lazy" />
+          {% endif %}
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
+          <li>
+            <a class="dropdown-item" href="{% url 'owner_profile' %}">My profile</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="{% url 'owner_update' %}">Update Profile</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+          </li>
+        </ul>
+        {% else %}
+        <div class="ms-auto">
+          <a href="{% url 'login' %}" class="btn btn-primary px-3 me-2">Login</a>
+          <a href="{% url 'register' %}" class="btn btn-primary me-3">Sign up for free</a>
+
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    <!-- Right elements -->
+  </div>
+  <!-- Container wrapper -->
+</nav>
+<!-- Navbar -->

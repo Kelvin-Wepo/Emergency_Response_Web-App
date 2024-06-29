@@ -1,0 +1,85 @@
+{% extends 'owners/base2.html' %}
+{% load static %}
+{% block title %}
+Add Machinery--
+{% endblock title %}
+
+{% block content %}
+<section class="vh-70">
+    <div class="container-fluid py-2 h-100" id="post-page">
+        <div class="row d-flex align-items-center justify-content-center h-100">
+            <div class="col-md-7 card p-4" id="hood-card">
+                <form method="POST" action="" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <!-- Image field -->
+                    <div class="mb-3 col-md-12">
+                        <label class="form-label" for="customFile">Machinery Image</label>
+                        <input type="file" class="form-control" id="image" name="image" />
+
+                    </div>
+
+                    <div row="px-4">
+                        <div class="form-outline mb-4">
+                            <textarea class="form-control" id="describe" rows="4" name="describe"></textarea>
+                            <label class="form-label" for="form6Example7">Machinery Properties</label>
+                        </div>
+                    </div>
+                    <div class="row px-4">
+                        <div class="form-outline mb-4 col-md-5 me-3">
+                            <input type="text" id="machinery-name" class="form-control" name="machine" />
+                            <label class="form-label" for="name">Machinery Name
+                        </div>
+
+                        <div class="form-outline mb-4 col-md-4 me-2">
+                            <input type="text" id="machinery-name" class="form-control" name="location" />
+                            <label class="form-label" for="name">Current Location</label>
+                        </div>
+                        <div class="form-outline mb-4 col-md-2">
+                            <input type="text" id="machinery-name" class="form-control" name="available" />
+                            <label class="form-label" for="name">Availability
+                        </div>
+                    </div>
+
+                    <div class="row  px-4">
+                        <div class="form-outline mb-4 col-md-4 me-2">
+                            <input type="text" id="business_name" class="form-control" name="hire" />
+                            <label class="form-label" for="name">Hire Price Per Hour</label>
+                        </div>
+
+
+                        <div class="form-outline mb-4 col-md-4  me-2">
+                            <input type="text" id="location" class="form-control" name="ploughing" />
+                            <label class="form-label" for="name">Ploughing Pay Rate</label>
+                        </div>
+
+                        <div class="form-outline mb-4 col-md-3  me-2">
+                            <input type="number" id="count" class="form-control" name="forklifting" />
+                            <label class="form-label" for="title">ForkLifting Pay Rate</label>
+                        </div>
+                    </div>
+
+                    <div class=" row px-4">
+                        <div class="form-outline mb-4 col-md-3 me-2">
+                            <input type="text" id="contact" class="form-control" name="transport" />
+                            <label class="form-label" for="title">Transport Pay Rate</label>
+                        </div>
+
+                        <div class="form-outline mb-4 col-md-4 me-3">
+                            <input type="text" id="contact" class="form-control" name="planting" />
+                            <label class="form-label" for="title">Planting Pay Rate</label>
+                        </div>
+
+                        <div class="form-outline mb-4 col-md-4 ">
+                            <input type="text" id="police" class="form-control" name="operator_name" />
+                            <label class="form-label" for="title">Operator_name</label>
+                        </div>
+                    </div>
+
+                    <!-- Submit button -->
+                    <button type="submit" class="btn btn-primary btn-lg btn-block">Add Machinery</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

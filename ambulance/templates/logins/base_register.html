@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="card p-3">
+    <h3>Sign up for free</h3>
+
+    <p class="text-center">
+
+        <a href="{% url 'owner_register' %}" class="btn btn-primary">I a Volunteer</a>
+
+        <a href="{% url 'register' %}" class="btn btn-secondary"> I am a General User</a>
+    </p>
+
+</div>
+
+
+{% endblock content %}

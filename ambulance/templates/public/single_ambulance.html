@@ -1,0 +1,156 @@
+{% extends 'public/base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row mb-4">
+    </div>
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-7">
+                <p>{{single_ambulance.ambulance_name }}</p>
+                <div class="card">
+                    <img src="{{single_machine.image.url}}" class="card-img-top" alt="Elizabeth" id="machine-image">
+                </div>
+
+            </div>
+            <div class="col-md-5">
+                <div class="row">
+                    <p class="text-center">
+                        {{single_ambulance.ambulance_properties}}
+                    </p>
+                </div>
+                {% comment %} <div class="row mb-4 ps-5 pt-3">
+                    <!-- Availability -->
+                    <a class="btn btn-outline-right btn-sm col-md-4 me-3 mb-3" id="c">
+                        <h4>{{single_ambulance.availability }}</h4>
+                        <span class="sc">Availability</span>
+                    </a> {% endcomment %}
+
+
+                    <div class="row mb-4 ps-5 pt-3">
+                        <!-- Availability -->
+                        <div class="col-md-4 me-3 mb-3">
+                          <h4>Availability</h4>
+                          <div class="form-check">
+                            <input class="form-check-input" type="radio" name="availability" id="availabilityYes" value="Yes" {{ single_ambulance.availability == 'Yes' ? 'checked' : '' }}>
+                            <label class="form-check-label" for="availabilityYes">
+                              Yes
+                            </label>
+                          </div>
+                          <div class="form-check">
+                            <input class="form-check-input" type="radio" name="availability" id="availabilityNo" value="No" {{ single_ambulance.availability == 'No' ? 'checked' : '' }}>
+                            <label class="form-check-label" for="availabilityNo">
+                              No
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      
+
+
+
+                    <!-- Hire price -->
+                    <a class="btn btn-outline-success btn-sm col-md-4 me-3 mb-3" id="c">
+                        <h4>{{single_machine.hire_price }}</h4>
+                        <span class="sc">Day Hire Price</span>
+                    </a>
+
+                    <!-- ploughing_pay_rate -->
+                    <a class="btn btn-outline-primary btn-sm col-md-4 me-3 mb-3" id="c">
+                        <h4>{{single_machine.ploughing_pay_rate }}</h4>
+                        <span class="sc">Ploughing Price</span>
+                    </a>
+
+                    <!-- planting_pay_rate -->
+                    <a class="btn btn-outline-secondary col-md-4 me-3 mb-3" id="c">
+                        <h4>{{single_machine.planting_pay_rate }}</h4>
+                        <span class="sc">Planting Price</span>
+                    </a>
+
+
+                    <!-- forklifting_pay_rate -->
+                    <a class="btn btn-outline-warning btn-sm col-md-4 me-3  mb-3" id="c">
+                        <h4>{{single_machine.forklifting_pay_rate }}</h4>
+                        <span class="sc">Forklifting Price</span>
+                    </a>
+
+                    <!-- forklifting_pay_rate -->
+                    <a class="btn btn-outline-dark btn-sm col-md-4 me-3  mb-3" id="c">
+                        <h4>{{single_machine.transport_pay_rate }}</h4>
+                        <span class="sc">Transportation Price</span>
+                    </a>
+                    <!-- operator_name -->
+                    <a class="btn btn-outline-info btn-sm col-md-4 me-3 mb-3" id="c">
+                        <h5>{{single_ambulance.operator_name }}</h5>
+                        <span class="sc">Operator Name</span>
+                    </a>
+
+                </div>
+                <hr>
+                <div class="row ps-5">
+                    <div class="col-md-6">
+                        <a href="{% url 'comment' single_machine.id %}" class="btn btn-warning btn-lg p-3 fs-5 fw-bold"
+                            data-mdb-toggle="modal" data-mdb-target="#exampleModal">Comment & Rate</a>
+
+                        <!-- Button trigger modal -->
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Rate services, Feedback,
+                                            comments, experiences</h5>
+                                        <button type="button" class="btn-close" data-mdb-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+
+                                        <div class="mb-3 mx-auto" id="contain-order">
+                                            <h2 class="text-center p-4" id="order-title">we value your feedback </h2>
+                                            <div class="col-md-12 mx-auto" id="form-order">
+                                                <div class="form_container shadow text-black">
+                                                    <form action="{% url 'comment' single_machine.id %}" method="POST"
+                                                        class="pb-3">
+                                                        {% csrf_token %}
+                                                        <div class="col-md-10 p-4 mx-auto">
+                                                            {% bootstrap_form form2 %}
+                                                        </div>
+                                                        <p class="text-center">
+                                                            <button type="submit" class="btn btn-warning btn-lg">Comment
+                                                                & Rate</button>
+                                                        </p>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-mdb-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary">Save changes</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <a href="{% url 'order' single_machine.id %}"
+                            class="btn btn-success btn-lg p-3 fs-5 fw-bold">Book / Hire</a>
+                    </div>
+                </div>
+
+
+
+
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+{% endblock content %}

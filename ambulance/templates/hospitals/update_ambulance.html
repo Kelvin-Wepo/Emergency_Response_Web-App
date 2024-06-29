@@ -1,0 +1,23 @@
+{% extends "owners/base2.html" %}
+{% load bootstrap4 %}
+{% load static %}
+{% block title %} Niokolee| update_machinery {% endblock title%}
+{% block content %}
+<div class=" mx-auto mt-5 shadow p-5">
+
+    <h4 class="text-center">Machinery Update Details</h4>
+    <hr>
+    <div class="row">
+        <!-- <div class="col-md-3"></div> -->
+        <div class="col-md-6 update-profile mx-auto mb-3 p-2">
+            <form action="" method="POST" enctype="multipart/form-data">
+                {%csrf_token%}
+
+                {% bootstrap_form form2 layout='horizontal' button_type='submit' form_group_class='my-form-group' %}
+                <input type="submit" class="btn" value="Save Machinery Update" id="btn-update-machine">
+                <a href="{% url 'owner' %}"><button type="button" class="btn" id="btn-update-machine-back-btn"><i class="fas fa-angle-left"></i> Back Home</button></a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

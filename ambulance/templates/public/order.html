@@ -1,0 +1,28 @@
+{% extends 'public/base.html' %} {% load static %} {% load bootstrap4 %} {%
+block content %} {% block content %}
+
+<div
+  class="container-fluid d-flex justify-content-center align-items-center mt-5 mb-3">
+  <div class="col-md-7 mx-auto shadow mb-4">
+    <h1 id="order-title" class="text-center">Ambulance Booking Form</h1>
+
+    <div class="p-4 form_container">
+      <form action="" method="POST">
+        {% csrf_token %}
+        
+          {% bootstrap_form form3 form_group_class='order-form-group' %}
+        </div>
+        <div class="col-8 offset 3 p-3">
+            <a
+              href="/checkout/"
+              class="btn btn-block btn-warning fw-bold"
+              id="hire-machinery-btn"
+              >Request An Ambulance</a
+            >
+    
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

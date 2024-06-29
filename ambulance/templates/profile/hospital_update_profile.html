@@ -1,0 +1,23 @@
+{% extends "owners/base2.html" %}
+{% load bootstrap4 %}
+{% load static %}
+{% block title %} Okoa Farm | update_profile {% endblock title%}
+{% block content %}
+<div class="container-fluid d-flex justify-content-center align-items-center" id="color-green">
+    <div class="col-md-6 shadow mx-auto update-profile">
+
+        <h4 class="text-center">Profile Update</h4>
+        <div class="row mx-auto">
+                <form action="" method="POST" enctype="multipart/form-data">
+                    {%csrf_token%}
+
+                    {% bootstrap_form form %}
+                    <p class="text-center mt-3">
+                        <input type="submit" class="btn" value="Save Profile changes" id="edit-profile-btn">
+                    <a href="{% url 'owner' %}"><button type="button" class="btn "id="back-home-btn"> <i class="fas fa-angle-double-left"></i> Back Home</button></a>
+                    </p>
+                </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

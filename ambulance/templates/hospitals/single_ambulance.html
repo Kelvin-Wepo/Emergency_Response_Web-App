@@ -1,0 +1,65 @@
+{% extends 'owners/base2.html' %}
+{% load static %}
+{% block content %}
+<div class="container-fluid">
+    <div class="row mb-4">
+    </div>
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-7">
+                <div class="card">
+                    <img src="{{single_machines.image.url}}" class="card-img-top" alt="Reuby" id="machine-image">
+                </div>
+
+            </div>
+            <div class="col-md-5">
+                <div class="row">
+                    <div class="row mb-2">
+                        <div class="card p-2">
+                            <h4 class="headings pb-1">{{single_machines.machinery_name}}</h4>
+                            <p class="text-center" id="machinery-properties">
+                                {{single_machines.machinery_properties}}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="card p-2">
+                            <h4 class="headings">current location</h4>
+                            <p class="machinery-properties">{{single_machines.current_location}}</p>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="card">
+                            <h5 class="fw-bold fs-3">Orders</h5>
+                            {% for order in orders %}
+                            <p class="fs-4"><b>1. {{order.customer_name}}</b> Requested for : <b>{{order.service}} service</b></p>
+                            <p></p>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row mt-3">
+                    <div class="card" id="button-card">
+                        <div class="row mt-4">
+                            <div class="col-md-6">
+                                <a href="/update/{{single_machines.id}}/details" class="btn btn-block" id="update-btn">
+                                    <i class="fas fa-pen-nib"></i> Update Machinery Details</a>
+                            </div>
+                            <div class="col-md-6">
+                                <a href="/delete/{{single_machines.id}}" class="btn btn-danger btn-block"
+                                    id="remove-btn"> <i class="fas fa-trash"></i> Remove
+                                    {{single_machines.machinery_name}}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+
+    {% endblock content %}

@@ -1,0 +1,47 @@
+{% extends 'public/base.html' %}
+{% load static %}
+{% block content %}
+<div class="container-fluid" id="services-page">
+    <div class="row mb-4 ">
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% for ambulance in ambulances %}
+            <div class="col">
+                <div class="card h-100 mb-3">
+                    <img src="{{ambulance.image.url}}" class="card-img-top w-100" alt="ambulance" />
+                    <div class="card-body p-3">
+                        <h5 class="card-title"></h5>
+                        <p class="card-text" id="description-of-machinery">
+                            {{ambulance.ambulance_properties}}.
+                        </p>
+                    </div>
+                    <div class="col-md-8 mb-3 p-3">
+                        <a href="{% url 'single_ambulance' ambulance.id %}" class="btn btn-lg btn-outline-success fs-4">Ambulance  Description</a>
+                        
+                    </div>
+                    
+                </div>
+                
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+</div>
+
+{% endblock content %}
+
+
+<!-- 1. User Authentication.
+2. Home module / Home page - An outline of the services provided by the application.
+3. Machinery Owner panel- Enables the machinery owner to upload and set availability of 
+ machinery.
+4. Booking Module- For booking purposes.
+5. Feedback module - User feedback.
+6. Users panel - User can be able to see the available machinery for hire and the times they are available.
+
+7. machine available or not()
+8.User profile()
+9.CRUD operations. 
+10.Rating and review
+11.Email feature-->
+{% comment %} 12. Africas talking API(SMS and USSD features) {% endcomment %}

@@ -1,0 +1,42 @@
+{% extends 'owners/base2.html' %}
+{% load static %}
+{% block content %}
+<div class="container-fluid">
+  <div class="col-md-12">
+    <P class="text-center featured-machinery">Featured machinery</P>
+    <div class="row" id="owner-page">
+      {% for single in machinery %}
+      <div class="col-sm-5 mx-auto mb-4">
+        <div class="card">
+          <img src="{{single.image.url}}" class="card-img-top" alt="{{single.machinery_name|capfirst}}" />
+          <div class="card-body">
+            <h5 class="card-title fw-bold text-black">{{single.machinery_name|capfirst}}</h5>
+            <p class="card-text">{{single.machinery_properties|capfirst}}.</p>
+            <a href="{% url 'single' single.id %}" class="btn btn-block details-btn">Details</a>
+            
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+
+</div>
+</div>
+
+{% endblock content %}
+
+
+<!-- 1. User Authentication.
+2. Home module / Home page - An outline of the services provided by the application.
+3. Machinery Owner panel- Enables the machinery owner to upload and set availability of 
+ machinery.
+4. Booking Module- For booking purposes.
+5. Feedback module - User feedback.
+6. Users panel - User can be able to see the available machinery for hire and the times they are available.
+
+7. machine available or not()
+8.User profile()
+9.CRUD operations. 
+10.Rating and review
+11.Email feature-->
